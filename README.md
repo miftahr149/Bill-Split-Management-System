@@ -1,2 +1,0 @@
-# Spilt-Bill-Managment-System
- 

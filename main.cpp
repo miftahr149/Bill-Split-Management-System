@@ -1,6 +1,7 @@
 #include <iostream>
 #include "utility.h"
 #include "storage.h"
+#include "ui.h"
 
 int main()
 {
@@ -12,6 +13,8 @@ int main()
   
   std::string str = "storage/requestedBillSplit"; 
   storage::Database<storage::BillSplit> requestedBillSplit(str);
+
+  auto user = ui::loginUI(userData);
 
   return 0;
 }

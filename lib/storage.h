@@ -22,11 +22,9 @@ namespace storage
   class BillSplit : MasterClass
   {
     std::string name;
-    int debt;
-    int numDebt;
-    std::vector<std::string> nameDebt;
-    int numPaymentSuccessfull;
-    std::vector<std::string> namePaymentSuccessful;
+    int bill;
+    std::vector<std::string> debt;
+    std::vector<std::string> paymentSuccessful;
 
   public:
     BillSplit() {}
@@ -48,7 +46,7 @@ namespace storage
 
         if (i == 1)
         {
-          this->debt = std::stoi(array[i]);
+          this->bill = std::stoi(array[i]);
           continue;
         }
 
@@ -56,18 +54,14 @@ namespace storage
         {
           counter = std::stoi(array[i]);
           nextDestination += counter + 1;
-          if (counterCycle == 0)
-            this->numDebt = counter;
-          else
-            this->numPaymentSuccessfull = counter;
           counterCycle++;
           continue;
         }
 
         if (counterCycle == 1)
-          this->nameDebt.push_back(array[i]);
+          this->debt.push_back(array[i]);
         else
-          this->namePaymentSuccessful.push_back(array[i]);
+          this->paymentSuccessful.push_back(array[i]);
         counter--;
       }
     }
@@ -75,18 +69,17 @@ namespace storage
     void save(std::ofstream &output)
     {
       output << this->name << ",";
-      output << this->debt << ",";
-      output << this->numDebt << ",";
+      output << this->bill << ",";
 
-      for (auto peopleName : this->nameDebt)
+      output << debt.size() << ",";
+      for (auto peopleName : this->debt)
         output << peopleName << ",";
 
-      output << this->numPaymentSuccessfull << ",";
-
-      for (auto peopleName : this->namePaymentSuccessful)
+      output << this->paymentSuccessful.size() << ",";
+      for (auto peopleName : this->paymentSuccessful)
       {
         output << peopleName;
-        if (peopleName == this->namePaymentSuccessful.back())
+        if (peopleName == this->paymentSuccessful.back())
           output << std::endl;
         else
           output << ",";
@@ -96,11 +89,17 @@ namespace storage
     BillSplit(const BillSplit &obj1)
     {
       this->name = obj1.name;
+      this->bill = obj1.bill;
       this->debt = obj1.debt;
-      this->numDebt = obj1.numDebt;
-      this->nameDebt = obj1.nameDebt;
-      this->numPaymentSuccessfull = obj1.numPaymentSuccessfull;
-      this->namePaymentSuccessful = obj1.namePaymentSuccessful;
+      this->paymentSuccessful = obj1.paymentSuccessful;
+    }
+
+    std::string getName() const { return this->name; }
+    int getBill() const { return this->bill; }
+    std::vector<std::string> getDebt() const { return this->debt; }
+    std::vector<std::string> getSuccessfulPayment() const
+    {
+      return this->paymentSuccessful;
     }
   };
 
@@ -134,6 +133,16 @@ namespace storage
       output << password << ',';
       output << type << std::endl;
     }
+
+    bool operator==(std::string username) { return (this->name == username); }
+
+    void setName(std::string name) { this->name = name; }
+    void setPassword(std::string password) { this->password = password; }
+    void setType(std::string type) { this->type = type; }
+
+    std::string getName() const { return this->name; }
+    std::string getPassword() const { return this->password; }
+    std::string getType() const { return this->type; }
   };
 
   std::vector<int> findSubStrIndex(std::string str, char sep)
@@ -214,6 +223,14 @@ namespace storage
 
     void deleteElement(int id) { this->data.erase(id); }
     T getData(int id) { return this->data[id]; }
+
+    int find(std::string name)
+    {
+      for (auto element : data)
+        if (element.second == name)
+          return element.first;
+      return -1;
+    }
   };
 }
 

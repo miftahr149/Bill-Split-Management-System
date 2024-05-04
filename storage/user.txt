@@ -1,2 +1,3 @@
 1,admin,12345,ADMIN
 2,miftah,test123,USER
+3,Daniel,testme,USER

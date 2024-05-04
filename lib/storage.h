@@ -1,5 +1,5 @@
 #ifndef STORAGE_H
-#define STORAGE
+#define STORAGE_H
 
 #include <iostream>
 #include <map>
@@ -12,13 +12,19 @@
 
 namespace storage
 {
+  // This class is used to determine the body for the database's data type
   class MasterClass
   {
   public:
+    // use to extract string into into respective class attributes
     virtual void extract(std::vector<std::string>) {}
+
+    // use to write from attributes data to string format in the given file
     virtual void save(std::ofstream &) {}
   };
 
+  // this class contain the name of the bill split, the amount of bill in RM,
+  // who has paid, and who hasn't paid yet.
   class BillSplit : MasterClass
   {
     std::string name;
@@ -28,6 +34,7 @@ namespace storage
 
   public:
     BillSplit() {}
+
     BillSplit(std::vector<std::string> array) { this->extract(array); }
 
     void extract(std::vector<std::string> array)
@@ -145,6 +152,7 @@ namespace storage
     std::string getType() const { return this->type; }
   };
 
+  // this function is use to find all the index of char 'sep' in string 'str'
   std::vector<int> findSubStrIndex(std::string str, char sep)
   {
     std::vector<int> result = {-1};
@@ -154,6 +162,7 @@ namespace storage
     return result;
   }
 
+  // split the string into an array of string using char 'sep'
   std::vector<std::string> split(std::string str, char sep = ',')
   {
     std::vector<std::string> result;
@@ -167,15 +176,25 @@ namespace storage
     return result;
   }
 
+  // The Database class is a template class that provides a simple way to 
+  // manage and persist data. It is designed to work with any data type T that 
+  // can be serialized and deserialized.
+  //
+  // ### Attributes:
+  // highestId: An integer that keeps track of the highest ID assigned to an 
+  //            element in the database
+  // dirname: the directory where the database file is stored
+  // data: store the data elements, where each element is associated with a 
+  //       unique integer ID
   template <typename T>
   class Database
   {
     int highestId;
     std::string dirname;
     std::map<int, T> data;
-    std::function<void(std::ofstream &, int, T)> saveFunc;
 
   public:
+    // initializes the dirname and highestId, and loads data from the file into the data map
     Database(std::string dirname) : dirname(dirname), highestId(0)
     {
       std::ifstream inputStream(this->dirname);
@@ -201,6 +220,7 @@ namespace storage
       inputStream.close();
     }
 
+    // adds a new data element to the database. If no ID is provided, it assigns the next available ID
     void add(T newData, int id = -1)
     {
       if (id == -1)
@@ -208,8 +228,10 @@ namespace storage
       this->data[id] = newData;
     }
 
+    // updates the data element associated with the given ID
     void update(int id, T newData) { this->data[id] = newData; }
 
+    // saves all the data elements in the database to the file
     void save()
     {
       std::ofstream outputStream(this->dirname);
@@ -221,9 +243,13 @@ namespace storage
       outputStream.close();
     }
 
+    // removes the data element associated with the given ID from the database
     void deleteElement(int id) { this->data.erase(id); }
+    
+    // retrieves the data element associated with the given ID
     T getData(int id) { return this->data[id]; }
 
+    // finds the ID of the data element that matches the given name
     int find(std::string name)
     {
       for (auto element : data)

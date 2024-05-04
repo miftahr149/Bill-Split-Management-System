@@ -220,6 +220,14 @@ namespace storage
       inputStream.close();
     }
 
+    Database(const Database &obj) {
+      this->data = obj.data;
+      this->highestId = obj.highestId;
+      this->dirname = obj.dirname; 
+    }
+
+    Database() {}
+
     // adds a new data element to the database. If no ID is provided, it assigns the next available ID
     void add(T newData, int id = -1)
     {

@@ -43,12 +43,12 @@ namespace ui
   {
     int length = header.length();
     int left = (maxLength - (length + 2 * space)) / 2;
-    int right = maxLength - (length + left);
+    int right = maxLength - (length + left + 2 * space);
 
     std::cout << std::setfill('=') << std::setw(left) << "";
     std::cout << std::setfill(' ') << std::setw(space) << "";
     std::cout << header << std::setw(space) << "";
-    std::cout << std::setfill('=') << std::setw(right);
+    std::cout << std::setfill('=') << std::setw(right) << "";
     std::cout << std::endl;
   }
 
@@ -58,13 +58,41 @@ namespace ui
     std::cout << "" << std::endl;
   }
 
+  void getOption(
+      std::vector<char> options,
+      std::vector<std::string> labels,
+      std::vector<std::function<void()>> functions)
+
+  {
+    for (int i = 0; i < options.size(); i++)
+      std::cout << options[i] << "."
+                << " " << labels[i] << std::endl;
+    createLine();
+
+    char userOption;
+    std::cout << "Please insert your Option: ";
+    std::cin >> userOption;
+
+    for (int i = 0; i < options.size(); i++)
+      if (userOption == options[i])
+      {
+        functions[i]();
+        return;
+      }
+
+    std::cout << "your option is invalid! please enter correct option";
+    std::cout << std::endl
+              << std::endl;
+    getOption(options, labels, functions);
+  }
+
   class MainMenu
   {
     storage::User userInfo;
     storage::Database<storage::BillSplit> billSplit;
     storage::Database<storage::BillSplit> requestedBillSplit;
 
-    void displayUser()
+    void _displayUser()
     {
       // display input;
       std::cout << "1. view current bill" << std::endl;
@@ -76,7 +104,7 @@ namespace ui
       // get user input
       char userOption;
       std::cout << "Please insert your option: ";
-      std::cin.get(userOption);
+      std::cin >> userOption;
 
       if (userOption == '0')
         return;
@@ -91,11 +119,27 @@ namespace ui
         return;
       }
 
-      std::cout << "you option is invalid! please enter correct option"; 
+      std::cout << "you option is invalid! please enter correct option";
       std::cout << std::endl;
-      this->displayUser();
+      this->_displayUser();
     }
-    void displayAdmin();
+
+    void displayUser()
+    {
+      getOption(
+          {'1', '2', '0'},
+          {"View Current Bill", "Request New Bill", "Exit"},
+          {[]()
+           { std::cout << "Hello World"; },
+           []()
+           { std::cout << "Hi there;"; },
+           []()
+           { return; }});
+    }
+
+    void displayAdmin()
+    {
+    }
 
   public:
     MainMenu(
@@ -112,11 +156,9 @@ namespace ui
     void display()
     {
       std::cout << "Welcome Back " << this->userInfo.getName();
-      std::cout << std::endl
-                << std::endl;
+      std::cout << std::endl;
       createHeader("Main Menu");
       std::cout << std::endl;
-      createLine();
 
       if (userInfo.getType() == "USER")
         this->displayUser();

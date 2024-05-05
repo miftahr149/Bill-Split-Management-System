@@ -92,55 +92,6 @@ namespace ui
     storage::Database<storage::BillSplit> billSplit;
     storage::Database<storage::BillSplit> requestedBillSplit;
 
-    void _displayUser()
-    {
-      // display input;
-      std::cout << "1. view current bill" << std::endl;
-      std::cout << "2. request new bill" << std::endl;
-      std::cout << std::endl;
-      std::cout << "0. Exit" << std::endl;
-      createLine();
-
-      // get user input
-      char userOption;
-      std::cout << "Please insert your option: ";
-      std::cin >> userOption;
-
-      if (userOption == '0')
-        return;
-      if (userOption == '1')
-      {
-        // ViewBills(this);
-        return;
-      }
-      if (userOption == '2')
-      {
-        // requestBills(this);
-        return;
-      }
-
-      std::cout << "you option is invalid! please enter correct option";
-      std::cout << std::endl;
-      this->_displayUser();
-    }
-
-    void displayUser()
-    {
-      getOption(
-          {'1', '2', '0'},
-          {"View Current Bill", "Request New Bill", "Exit"},
-          {[]()
-           { std::cout << "Hello World"; },
-           []()
-           { std::cout << "Hi there;"; },
-           []()
-           { return; }});
-    }
-
-    void displayAdmin()
-    {
-    }
-
   public:
     MainMenu(
         storage::User userInfo,
@@ -161,9 +112,35 @@ namespace ui
       std::cout << std::endl;
 
       if (userInfo.getType() == "USER")
-        this->displayUser();
+        getOption(
+            {'1', '2', '0'},
+            {"View Current Bill", "Request New Bill", "Exit"},
+            {
+                []()
+                { std::cout << " Hello World"; },
+                []()
+                { std::cout << " Hello World"; },
+                []()
+                { std::cout << " Hello World"; },
+            });
       else
-        this->displayAdmin();
+        getOption(
+            {'1', '2', '3', '4', '0'},
+            {"View Current Payment", "View Requested Payment",
+             "Add Payment", "View User", "Exit"},
+            {
+                []()
+                { std::cout << "Hello World"; },
+                []()
+                { std::cout << "Hello World"; },
+                []()
+                { std::cout << "Hello World"; },
+                []()
+                { std::cout << "Hello World"; },
+                []()
+                { std::cout << "Hello World"; },
+            });
+      
     }
   };
 }

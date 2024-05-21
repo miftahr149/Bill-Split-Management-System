@@ -58,53 +58,97 @@ namespace ui
     std::cout << "" << std::endl;
   }
 
-  void getOption(
-      std::vector<char> options,
-      std::vector<std::string> labels,
-      std::vector<std::function<void()>> functions)
-
+  class UIMaster
   {
-    for (int i = 0; i < options.size(); i++)
-      std::cout << options[i] << "."
-                << " " << labels[i] << std::endl;
-    createLine();
-
-    char userOption;
-    std::cout << "Please insert your Option: ";
-    std::cin >> userOption;
-
-    for (int i = 0; i < options.size(); i++)
-      if (userOption == options[i])
-      {
-        functions[i]();
-        return;
-      }
-
-    std::cout << "your option is invalid! please enter correct option";
-    std::cout << std::endl
-              << std::endl;
-    getOption(options, labels, functions);
-  }
-
-  class MainMenu
-  {
+  protected:
     storage::User userInfo;
     storage::Database<storage::BillSplit> billSplit;
     storage::Database<storage::BillSplit> requestedBillSplit;
+    ui::UIMaster *master;
 
-  public:
-    MainMenu(
-        storage::User userInfo,
-        storage::Database<storage::BillSplit> billSplit,
-        storage::Database<storage::BillSplit> requestedBillSplit)
+    void getOption(
+        std::vector<char> options,
+        std::vector<std::string> labels,
+        std::vector<std::function<void()>> functions,
+        bool back = false)
+
     {
-      this->userInfo = userInfo;
-      this->billSplit = billSplit;
-      this->requestedBillSplit = requestedBillSplit;
-      this->display();
+
+      if (back)
+      {
+        options.push_back('0');
+        labels.push_back("Back");
+        functions.push_back(
+            [this]()
+            { this->master->display(); });
+      }
+
+      for (int i = 0; i < options.size(); i++)
+        std::cout << options[i] << "."
+                  << " " << labels[i] << std::endl;
+
+      std::cout << std::endl;
+      createLine();
+
+      char userOption;
+      std::cout << "Please insert your Option: ";
+      std::cin >> userOption;
+
+      for (int i = 0; i < options.size(); i++)
+        if (userOption == options[i])
+        {
+          functions[i]();
+          return;
+        }
+
+      std::cout << "your option is invalid! please enter correct option";
+      std::cout << std::endl
+                << std::endl;
+      getOption(options, labels, functions);
     }
 
-    void display()
+  public:
+    explicit UIMaster(
+        storage::User userInfo,
+        storage::Database<storage::BillSplit> &billSplit,
+        storage::Database<storage::BillSplit> &requestedBillSplit)
+    {
+      this->billSplit = billSplit;
+      this->userInfo = userInfo;
+      this->requestedBillSplit = requestedBillSplit;
+    }
+
+    explicit UIMaster(ui::UIMaster *master)
+    {
+      this->master = master;
+
+      this->requestedBillSplit = master->requestedBillSplit;
+      this->billSplit = master->billSplit;
+      this->userInfo = master->userInfo;
+    }
+
+    virtual void display() { std::cout << "Using UIMaster Display" << std::endl; }
+  };
+
+  class ViewUser : UIMaster
+  {
+  public:
+    using UIMaster::UIMaster;
+
+    void display() override
+    {
+      std::cout << "X" << std::endl;
+      this->master->display();
+    }
+  };
+
+  class MainMenu : UIMaster
+  {
+
+  public:
+    using UIMaster::UIMaster;
+
+    void display() override
     {
       std::cout << "Welcome Back " << this->userInfo.getName();
       std::cout << std::endl;
@@ -135,12 +179,14 @@ namespace ui
                 { std::cout << "Hello World"; },
                 []()
                 { std::cout << "Hello World"; },
-                []()
-                { std::cout << "Hello World"; },
+                [this]()
+                {
+                  ui::ViewUser *x = new ViewUser(this);
+                  x->display();
+                },
                 []()
                 { std::cout << "Hello World"; },
             });
-      
     }
   };
 }

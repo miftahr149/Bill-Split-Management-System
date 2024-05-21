@@ -15,7 +15,8 @@ int main()
   storage::Database<storage::BillSplit> requestedBillSplit(str);
 
   auto user = ui::loginUI(userData);
-  ui::MainMenu(user, billSplitData, requestedBillSplit);
+  ui::MainMenu mainMenu(user, billSplitData, requestedBillSplit);
+  mainMenu.display();
 
   return 0;
 }

@@ -37,9 +37,11 @@ namespace ui
 
   class ViewUser : UIMaster
   {
+    storage::Database<storage::User>* userDatabase;
     using UIMaster::UIMaster;
-    void displayUserList(storage::Database<storage::User>);
+    void displayUserList();
     void displayTable(std::string, std::string, std::string, std::string);
+    void createUser();
 
   public:
     void display() override;

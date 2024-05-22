@@ -232,10 +232,14 @@ namespace storage
       if (id == -1)
         id = ++this->highestId;
       this->data[id] = newData;
+      this->save();
     }
 
     // updates the data element associated with the given ID
-    void update(int id, T newData) { this->data[id] = newData; }
+    void update(int id, T newData) { 
+      this->data[id] = newData;
+      this->save(); 
+    }
 
     // saves all the data elements in the database to the file
     void save()
@@ -250,7 +254,10 @@ namespace storage
     }
 
     // removes the data element associated with the given ID from the database
-    void deleteElement(int id) { this->data.erase(id); }
+    void deleteElement(int id) { 
+      this->data.erase(id);
+      this->save(); 
+    }
     
     // retrieves the data element associated with the given ID
     T getData(int id) { return this->data[id]; }

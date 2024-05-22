@@ -43,12 +43,12 @@ void ui::UIMaster::getOption(
 
 ui::UIMaster::UIMaster(
     storage::User userInfo,
-    storage::Database<storage::BillSplit> &billSplit,
-    storage::Database<storage::BillSplit> &requestedBillSplit)
+    storage::Database<storage::BillSplit>& billSplit,
+    storage::Database<storage::BillSplit>& requestedBillSplit)
 {
-  this->billSplit = billSplit;
+  this->billSplit = &billSplit;
   this->userInfo = userInfo;
-  this->requestedBillSplit = requestedBillSplit;
+  this->requestedBillSplit = &requestedBillSplit;
 }
 
 ui::UIMaster::UIMaster(ui::UIMaster *master)

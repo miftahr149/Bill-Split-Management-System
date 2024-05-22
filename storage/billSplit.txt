@@ -1,2 +1,2 @@
 0
-2, test2,(miftah:20),(razqa:20)
+2,test2,(miftah:20),(razqa:20)

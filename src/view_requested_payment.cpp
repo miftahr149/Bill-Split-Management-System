@@ -26,16 +26,16 @@ void ui::ViewRequestedPayment::requestDetail(storage::BillSplit request)
         }
     else if (input == "1")
     {
-        int id = requestedBillSplit.find(request.getName());
+        int id = requestedBillSplit->find(request.getName());
 
-        billSplit.add(request, id);
+        billSplit->add(request, id);
 
-        requestedBillSplit.deleteElement(id);
+        requestedBillSplit->deleteElement(id);
     }
     else if (input == "2")
     {
-        int id = requestedBillSplit.find(request.getName());
-        requestedBillSplit.deleteElement(id);
+        int id = requestedBillSplit->find(request.getName());
+        requestedBillSplit->deleteElement(id);
     }
     display();
 }
@@ -44,7 +44,7 @@ void ui::ViewRequestedPayment::display()
 {
     ui::createHeader("View Requested Payment");
     cout << endl;
-    auto requestList = requestedBillSplit.getData();
+    auto requestList = requestedBillSplit->getData();
 
     int counter = 1;
     string input;

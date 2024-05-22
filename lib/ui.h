@@ -15,8 +15,8 @@ namespace ui
   {
   protected:
     storage::User userInfo;
-    storage::Database<storage::BillSplit> billSplit;
-    storage::Database<storage::BillSplit> requestedBillSplit;
+    storage::Database<storage::BillSplit>* billSplit;
+    storage::Database<storage::BillSplit>* requestedBillSplit;
     ui::UIMaster *master = nullptr;
 
     void getOption(
@@ -28,8 +28,8 @@ namespace ui
   public:
     explicit UIMaster(
         storage::User,
-        storage::Database<storage::BillSplit> &,
-        storage::Database<storage::BillSplit> &);
+        storage::Database<storage::BillSplit>&,
+        storage::Database<storage::BillSplit>&);
 
     explicit UIMaster(ui::UIMaster *);
     virtual void display() {}

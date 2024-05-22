@@ -27,9 +27,7 @@ namespace storage
   class BillSplit : MasterClass
   {
     std::string name;
-    int bill;
-    std::vector<std::string> debt;
-    std::vector<std::string> paymentSuccessful;
+    std::map<std::string, float> debtData;
 
   public:
     BillSplit() {}
@@ -38,10 +36,6 @@ namespace storage
 
     void extract(std::vector<std::string> array)
     {
-      int counter = 0;
-      int nextDestination = 2;
-      int counterCycle = 0;
-
       for (int i = 0; i < array.size(); i++)
       {
         if (i == 0)
@@ -50,63 +44,41 @@ namespace storage
           continue;
         }
 
-        if (i == 1)
-        {
-          this->bill = std::stoi(array[i]);
-          continue;
-        }
+        int startKeyIndex = 0;
+        int endKeyIndex = array[i].find(':');
 
-        if (i == nextDestination)
-        {
-          counter = std::stoi(array[i]);
-          nextDestination += counter + 1;
-          counterCycle++;
-          continue;
-        }
+        std::string debtName = array[i].substr(0, endKeyIndex - startKeyIndex);
 
-        if (counterCycle == 1)
-          this->debt.push_back(array[i]);
-        else
-          this->paymentSuccessful.push_back(array[i]);
-        counter--;
+        int startValueIndex = endKeyIndex + 1;
+        int endValueIndex = array[i].length() - 1;
+        int valueLength = endValueIndex - startValueIndex;
+        std::string strDebtValue = array[i].substr(
+            startValueIndex, valueLength);
+        
+        this->debtData[debtName] = std::stof(strDebtValue);
       }
     }
 
     void save(std::ofstream &output)
     {
-      output << this->name << ",";
-      output << this->bill << ",";
-
-      output << debt.size() << ",";
-      for (auto peopleName : this->debt)
-        output << peopleName << ",";
-
-      output << this->paymentSuccessful.size() << ",";
-      for (auto peopleName : this->paymentSuccessful)
+      output << this->name;
+      for (auto element : this->debtData)
       {
-        output << peopleName;
-        if (peopleName == this->paymentSuccessful.back())
-          output << std::endl;
-        else
-          output << ",";
+        output << ",";
+        output << "(" << element.first << ":"; 
+        output << element.second  << ")";
       }
+      output << std::endl;
     }
 
     BillSplit(const BillSplit &obj1)
     {
       this->name = obj1.name;
-      this->bill = obj1.bill;
-      this->debt = obj1.debt;
-      this->paymentSuccessful = obj1.paymentSuccessful;
+      this->debtData = obj1.debtData;
     }
 
     std::string getName() const { return this->name; }
-    int getBill() const { return this->bill; }
-    std::vector<std::string> getDebt() const { return this->debt; }
-    std::vector<std::string> getSuccessfulPayment() const
-    {
-      return this->paymentSuccessful;
-    }
+    std::map<std::string, float> getDebtData() const {return this->debtData;}
   };
 
   class User : MasterClass
@@ -175,15 +147,15 @@ namespace storage
     return result;
   }
 
-  // The Database class is a template class that provides a simple way to 
-  // manage and persist data. It is designed to work with any data type T that 
+  // The Database class is a template class that provides a simple way to
+  // manage and persist data. It is designed to work with any data type T that
   // can be serialized and deserialized.
   //
   // ### Attributes:
-  // highestId: An integer that keeps track of the highest ID assigned to an 
+  // highestId: An integer that keeps track of the highest ID assigned to an
   //            element in the database
   // dirname: the directory where the database file is stored
-  // data: store the data elements, where each element is associated with a 
+  // data: store the data elements, where each element is associated with a
   //       unique integer ID
   template <typename T>
   class Database
@@ -220,10 +192,11 @@ namespace storage
       inputStream.close();
     }
 
-    Database(const Database &obj) {
+    Database(const Database &obj)
+    {
       this->data = obj.data;
       this->highestId = obj.highestId;
-      this->dirname = obj.dirname; 
+      this->dirname = obj.dirname;
     }
     Database() {}
 
@@ -237,9 +210,10 @@ namespace storage
     }
 
     // updates the data element associated with the given ID
-    void update(int id, T newData) { 
+    void update(int id, T newData)
+    {
       this->data[id] = newData;
-      this->save(); 
+      this->save();
     }
 
     // saves all the data elements in the database to the file
@@ -256,14 +230,15 @@ namespace storage
     }
 
     // removes the data element associated with the given ID from the database
-    void deleteElement(int id) { 
+    void deleteElement(int id)
+    {
       this->data.erase(id);
-      this->save(); 
+      this->save();
     }
-    
+
     // retrieves the data element associated with the given ID
     T getData(int id) { return this->data[id]; }
-    std::map<int, T> getData() const {return this->data;}
+    std::map<int, T> getData() const { return this->data; }
 
     // finds the ID of the data element that matches the given name
     int find(std::string name)

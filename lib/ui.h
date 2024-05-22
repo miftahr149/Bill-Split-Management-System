@@ -40,8 +40,10 @@ namespace ui
     storage::Database<storage::User>* userDatabase;
     using UIMaster::UIMaster;
     void displayUserList();
-    void displayTable(std::string, std::string, std::string, std::string);
+    void displayUserRow(std::string, std::string, std::string, std::string);
+    void displayUserTable();
     void createUser();
+    void deleteUser();
 
   public:
     void display() override;

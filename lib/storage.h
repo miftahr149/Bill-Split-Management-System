@@ -198,6 +198,10 @@ namespace storage
     {
       std::ifstream inputStream(this->dirname);
 
+      std::string strHighestId;
+      std::getline(inputStream, strHighestId);
+      this->highestId = std::stoi(strHighestId);
+
       while (!inputStream.eof())
       {
         std::string inputResult;
@@ -209,9 +213,6 @@ namespace storage
         auto extract = split(inputResult);
         int id = std::stoi(extract[0]);
         extract.erase(extract.begin());
-
-        if (std::max(id, this->highestId) == id)
-          this->highestId = id;
 
         this->add(T(extract), id);
       }
@@ -245,6 +246,7 @@ namespace storage
     void save()
     {
       std::ofstream outputStream(this->dirname);
+      outputStream << this->highestId << std::endl;
       for (auto element : data)
       {
         outputStream << element.first << ",";

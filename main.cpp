@@ -11,7 +11,7 @@ int main()
   storage::Database<storage::User> userData("storage/user.txt");
   storage::Database<storage::BillSplit> billSplitData("storage/billSplit.txt");
   
-  std::string str = "storage/requestedBillSplit"; 
+  std::string str = "storage/requestedBillSplit.txt"; 
   storage::Database<storage::BillSplit> requestedBillSplit(str);
 
   auto user = ui::loginUI(userData);

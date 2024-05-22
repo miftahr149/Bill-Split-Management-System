@@ -1,5 +1,4 @@
-#ifndef UTILITY_H
-#define UTILITY_H
+#pragma once
 
 #include <iostream>
 
@@ -8,5 +7,3 @@ namespace util
   bool isFolderEmpty(std::string);
   void initFolder(std::string = "Storage");
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef STORAGE_H
-#define STORAGE_H
+#pragma once
 
 #include <iostream>
 #include <map>
@@ -153,7 +152,7 @@ namespace storage
   };
 
   // this function is use to find all the index of char 'sep' in string 'str'
-  std::vector<int> findSubStrIndex(std::string str, char sep)
+  inline std::vector<int> findSubStrIndex(std::string str, char sep)
   {
     std::vector<int> result = {-1};
     for (int i = str.find(sep); i < str.length(); i = str.find(sep, i + 1))
@@ -163,7 +162,7 @@ namespace storage
   }
 
   // split the string into an array of string using char 'sep'
-  std::vector<std::string> split(std::string str, char sep = ',')
+  inline std::vector<std::string> split(std::string str, char sep = ',')
   {
     std::vector<std::string> result;
     auto sepIndex = findSubStrIndex(str, sep);
@@ -267,5 +266,3 @@ namespace storage
     }
   };
 }
-
-#endif

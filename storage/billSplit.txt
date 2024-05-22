@@ -1,2 +1,2 @@
-1
-1,Makan Siang,10,1,Miftah,1,Daniel
+0
+2, test2,(miftah:20),(razqa:20)

@@ -27,8 +27,11 @@ void ui::MainMenu::display()
         {
             []()
             { std::cout << "Hello World"; },
-            []()
-            { std::cout << "Hello World"; },
+            [this]()
+            {
+              auto *x = new ui::ViewRequestedPayment(this);
+              x->display();
+            },
             []()
             { std::cout << "Hello World"; },
             [this]()
@@ -39,6 +42,6 @@ void ui::MainMenu::display()
             []()
             { std::cout << "Hello World"; },
         });
-  
+
   std::cout << std::endl;
 }

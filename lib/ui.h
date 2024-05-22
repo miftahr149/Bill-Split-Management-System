@@ -37,7 +37,7 @@ namespace ui
 
   class ViewUser : UIMaster
   {
-    storage::Database<storage::User>* userDatabase;
+    storage::Database<storage::User> *userDatabase;
     using UIMaster::UIMaster;
     void displayUserList();
     void displayUserRow(std::string, std::string, std::string, std::string);
@@ -54,5 +54,14 @@ namespace ui
   public:
     using UIMaster::UIMaster;
     void display() override;
+  };
+
+  class ViewRequestedPayment : UIMaster
+  {
+    using UIMaster ::UIMaster;
+
+  public:
+    void display() override;
+    void requestDetail(storage::BillSplit);
   };
 }

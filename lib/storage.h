@@ -44,17 +44,17 @@ namespace storage
           continue;
         }
 
-        int startKeyIndex = 0;
+        int startKeyIndex = 1;
         int endKeyIndex = array[i].find(':');
 
-        std::string debtName = array[i].substr(0, endKeyIndex - startKeyIndex);
+        std::string debtName = array[i].substr(1, endKeyIndex - startKeyIndex);
 
         int startValueIndex = endKeyIndex + 1;
         int endValueIndex = array[i].length() - 1;
         int valueLength = endValueIndex - startValueIndex;
         std::string strDebtValue = array[i].substr(
             startValueIndex, valueLength);
-        
+
         this->debtData[debtName] = std::stof(strDebtValue);
       }
     }
@@ -65,8 +65,8 @@ namespace storage
       for (auto element : this->debtData)
       {
         output << ",";
-        output << "(" << element.first << ":"; 
-        output << element.second  << ")";
+        output << "(" << element.first << ":";
+        output << element.second << ")";
       }
       output << std::endl;
     }
@@ -77,8 +77,13 @@ namespace storage
       this->debtData = obj1.debtData;
     }
 
+    bool operator==(std::string obj)
+    {
+      return obj == this->name;
+    }
+
     std::string getName() const { return this->name; }
-    std::map<std::string, float> getDebtData() const {return this->debtData;}
+    std::map<std::string, float> getDebtData() const { return this->debtData; }
   };
 
   class User : MasterClass

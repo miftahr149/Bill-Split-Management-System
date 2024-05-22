@@ -12,6 +12,7 @@ storage::User ui::loginUI(storage::Database<storage::User> userData)
   std::cout << std::setw(20) << std::left << "Password"
             << ":";
   std::cin >> password;
+  std::cout << std::endl;
 
   // Find Users
   int id = userData.find(username);
@@ -42,11 +43,11 @@ void ui::createHeader(std::string header, int maxLength, int space)
   std::cout << std::setfill(' ') << std::setw(space) << "";
   std::cout << header << std::setw(space) << "";
   std::cout << std::setfill('=') << std::setw(right) << "";
-  std::cout << std::endl;
+  std::cout << std::endl << std::setfill(' ');
 }
 
 void ui::createLine(char style, int maxLength)
 {
   std::cout << std::setfill(style) << std::setw(maxLength);
-  std::cout << "" << std::endl;
+  std::cout << "" << std::endl << std::setfill(' ');
 }

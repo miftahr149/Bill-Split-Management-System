@@ -224,7 +224,6 @@ namespace storage
       this->highestId = obj.highestId;
       this->dirname = obj.dirname; 
     }
-
     Database() {}
 
     // adds a new data element to the database. If no ID is provided, it assigns the next available ID
@@ -255,6 +254,7 @@ namespace storage
     
     // retrieves the data element associated with the given ID
     T getData(int id) { return this->data[id]; }
+    std::map<int, T> getData() const {return this->data;}
 
     // finds the ID of the data element that matches the given name
     int find(std::string name)

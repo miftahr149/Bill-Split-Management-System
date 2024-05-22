@@ -39,4 +39,6 @@ void ui::MainMenu::display()
             []()
             { std::cout << "Hello World"; },
         });
+  
+  std::cout << std::endl;
 }

@@ -30,6 +30,7 @@ void ui::UIMaster::getOption(
   for (int i = 0; i < options.size(); i++)
     if (userOption == options[i])
     {
+      std::cout << std::endl;
       functions[i]();
       return;
     }

@@ -146,3 +146,8 @@ void ui::ViewUser::display()
        { this->deleteUser(); }},
       true);
 }
+
+ui::ViewUser::~ViewUser()
+{
+  std::cout << "Deleting View User" << std::endl;
+}

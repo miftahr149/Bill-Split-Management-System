@@ -23,7 +23,7 @@ void ui::ViewRequestedPayment::requestDetail(storage::BillSplit request)
 
     if (input == "0")
     {
-        }
+    }
     else if (input == "1")
     {
         int id = requestedBillSplit->find(request.getName());

@@ -33,6 +33,7 @@ namespace ui
 
     explicit UIMaster(ui::UIMaster *);
     virtual void display() {}
+    ~UIMaster() {}
   };
 
   class ViewUser : UIMaster
@@ -47,6 +48,7 @@ namespace ui
 
   public:
     void display() override;
+    ~ViewUser();
   };
 
   class MainMenu : UIMaster
@@ -64,4 +66,23 @@ namespace ui
     void display() override;
     void requestDetail(storage::BillSplit);
   };
+
+  class ViewPayBill : UIMaster
+  {
+    using UIMaster::UIMaster;
+
+    public:
+      void display() override;
+      void paybill(int id);
+  };
+
+  class RequestBill : UIMaster
+  {
+    using UIMaster::UIMaster;
+
+    public:
+      void display() override;
+  };
+
+  void returnFunc(UIMaster *master, UIMaster *obj);
 }

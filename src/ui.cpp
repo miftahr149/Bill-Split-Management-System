@@ -51,3 +51,10 @@ void ui::createLine(char style, int maxLength)
   std::cout << std::setfill(style) << std::setw(maxLength);
   std::cout << "" << std::endl << std::setfill(' ');
 }
+
+void ui::returnFunc(UIMaster *master, UIMaster *obj)
+{
+  UIMaster temp = *master;
+  delete obj;
+  temp.display();
+}

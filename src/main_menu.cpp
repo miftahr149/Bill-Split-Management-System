@@ -12,12 +12,12 @@ void ui::MainMenu::display()
         {'1', '2', '0'},
         {"View Current Bill", "Request New Bill", "Exit"},
         {
+            [this]()
+            {ui::ViewPayBill(this).display();},
+            [this]()
+            {ui::RequestBill(this).display();},
             []()
-            { std::cout << " Hello World"; },
-            []()
-            { std::cout << " Hello World"; },
-            []()
-            { std::cout << " Hello World"; },
+            {},
         });
   else
     getOption(
@@ -25,19 +25,19 @@ void ui::MainMenu::display()
         {"View Current Payment", "View Requested Payment",
          "Add Payment", "View User", "Exit"},
         {
-            []()
-            { std::cout << "Hello World"; },
+            [this]()
+            { ui::ViewPayBill(this).display(); },
             [this]()
             {
-              auto *x = new ui::ViewRequestedPayment(this);
-              x->display();
+              ui::ViewRequestedPayment x(this);
+              x.display();
             },
             []()
             { std::cout << "Hello World"; },
             [this]()
             {
-              ui::ViewUser *x = new ViewUser(this);
-              x->display();
+              ui::ViewUser x(this);
+              x.display();
             },
             []()
             { std::cout << "Hello World"; },

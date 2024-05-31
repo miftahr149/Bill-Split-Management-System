@@ -59,6 +59,13 @@ namespace storage
       }
     }
 
+    void setName(std::string name) { this->name = name; }
+    
+    void setDebtData(std::map<std::string, float> debtData)
+    {
+      this->debtData = debtData;
+    }
+
     void save(std::ofstream &output)
     {
       output << this->name;
@@ -84,6 +91,10 @@ namespace storage
 
     std::string getName() const { return this->name; }
     std::map<std::string, float> getDebtData() const { return this->debtData; }
+    void deleteParticipant(std::string name)
+    {
+      this->debtData.erase(name);
+    }
   };
 
   class User : MasterClass

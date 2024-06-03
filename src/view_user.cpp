@@ -149,5 +149,5 @@ void ui::ViewUser::display()
 
 ui::ViewUser::~ViewUser()
 {
-  std::cout << "Deleting View User" << std::endl;
+  delete this->userDatabase;
 }

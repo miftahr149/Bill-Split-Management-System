@@ -22,6 +22,8 @@ void util::initFolder(std::string folderDirname)
     std::ofstream outputStream(fileDirname);
     if (fileName == "user")
       outputStream << "00001,admin,12345,ADMIN";
+    else
+      outputStream << 0 << std::endl;
     outputStream.close();
   }
 }

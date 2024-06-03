@@ -17,7 +17,8 @@ void ui::RequestBill::display()
   getline(cin, name);
   cout << "Enter amount : ";
   cin >> amount;
-  cout << "Add user : " << endl;
+  cout << endl;
+  cout << "Available User : " << endl;
 
   auto userDatabase = storage::Database<storage::User>("storage/user.txt");
   for (auto element : userDatabase.getData())
@@ -25,14 +26,28 @@ void ui::RequestBill::display()
     auto userData = element.second;
     cout << userData.getName() << ", ";
   }
-  
+
   vector<string> arrayName = {userInfo.getName()};
-  
-  cout << "\n1. Confirm\n" << "0. Back\n" << endl;
+
+  cout << endl;
+  cout << "Please enter your command base on this format: <Sign> <Name>";
+  cout << endl
+       << endl;
+  cout << "Available Sign:" << std::endl;
+  cout << "+ (Add to the list)" << endl;
+  cout << "- (Delete from the list)";
+  cout << endl
+       << endl;
+
+  cout << "1. Confirm\n"
+       << "0. Back\n"
+       << endl
+       << endl;
+
   while (true)
   {
     string userInput;
-    
+
     cout << "Participant: ";
     for (int i = 0; i < arrayName.size(); i++)
     {
@@ -44,6 +59,7 @@ void ui::RequestBill::display()
     }
     cout << endl;
 
+    cout << "your command: ";
     cin >> userInput;
 
     if (userInput == "1")
@@ -51,25 +67,29 @@ void ui::RequestBill::display()
       storage::BillSplit requestBillSplit;
       requestBillSplit.setName(name);
 
-      float value = amount/arrayName.size();
+      float value = amount / arrayName.size();
       std::map<std::string, float> x;
-      for(int i = 0; i < arrayName.size(); i++)
+      for (int i = 0; i < arrayName.size(); i++)
       {
         string name = arrayName[i];
         x[name] = value;
       }
-      requestBillSplit.setDebtData(x);
 
-      requestedBillSplit->add(requestBillSplit);
+      requestBillSplit.setDebtData(x);
+      if (this->userInfo.getType() == "USER")
+        requestedBillSplit->add(requestBillSplit);
+      else
+        billSplit->add(requestBillSplit);
+
       break;
     }
     if (userInput == "0")
       break;
-    
+
     string sign(userInput, 0, 1);
     userInput.erase(0, 1);
 
-    if (!(sign == "+" ||  sign == "-"))
+    if (!(sign == "+" || sign == "-"))
     {
       cout << "Invalid Sign!!" << endl;
       continue;
@@ -91,7 +111,8 @@ void ui::RequestBill::display()
       }
 
       arrayName.push_back(userInput);
-    } else 
+    }
+    else
     {
       if (index == -1)
       {
@@ -102,5 +123,5 @@ void ui::RequestBill::display()
     }
   }
 
-    return master->display();
+  return master->display();
 }

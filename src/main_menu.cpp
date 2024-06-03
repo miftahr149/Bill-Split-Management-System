@@ -28,19 +28,13 @@ void ui::MainMenu::display()
             [this]()
             { ui::ViewPayBill(this).display(); },
             [this]()
-            {
-              ui::ViewRequestedPayment x(this);
-              x.display();
-            },
-            []()
-            { std::cout << "Hello World"; },
+            { ui::ViewRequestedPayment(this).display(); },
             [this]()
-            {
-              ui::ViewUser x(this);
-              x.display();
-            },
+            { ui::RequestBill(this).display(); },
+            [this]()
+            { ui::ViewUser(this).display(); },
             []()
-            { std::cout << "Hello World"; },
+            {},
         });
 
   std::cout << std::endl;

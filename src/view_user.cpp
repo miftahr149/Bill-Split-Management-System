@@ -75,6 +75,7 @@ void ui::ViewUser::deleteUser()
   std::cout << std::endl;
 
   std::cout << "Input the name you want to delete: " << std::endl;
+  std::cout << std::endl;
 
   std::vector<std::string> accumulator;
   std::string userInput;
@@ -92,7 +93,9 @@ void ui::ViewUser::deleteUser()
     }
     std::cout << std::endl;
     
+    std::cout << "Your Command: ";
     std::cin >> userInput;
+    std::cout << std::endl;
 
     if (util::find(accumulator, userInput) != -1)
     {
@@ -110,6 +113,7 @@ void ui::ViewUser::deleteUser()
         int id = this->userDatabase->find(name);
         this->userDatabase->deleteElement(id);
       }
+      std::cout << std::endl;
       this->display();
       break;
     }

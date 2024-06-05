@@ -20,9 +20,12 @@ void util::initFolder(std::string folderDirname)
   {
     std::string fileDirname(folderDirname + "/" + fileName + ".txt");
     std::ofstream outputStream(fileDirname);
+    
     if (fileName == "user")
-      outputStream << "00001,admin,12345,ADMIN";
-    else
+    {
+      outputStream << 1 << std::endl;
+      outputStream << "1,admin,12345,ADMIN" << std::endl;
+    } else
       outputStream << 0 << std::endl;
     outputStream.close();
   }

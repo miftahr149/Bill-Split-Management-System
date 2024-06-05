@@ -68,6 +68,9 @@ namespace storage
 
     void save(std::ofstream &output)
     {
+      if (debtData.empty())
+        return;
+
       output << this->name;
       for (auto element : this->debtData)
       {
